@@ -1,4 +1,4 @@
-from .logic import variables_logic as vl
+from .import logic as vl
 from django.http import HttpResponse
 from django.core import serializers
 import json
@@ -33,3 +33,15 @@ def variable_view(request, pk):
         variable_dto = vl.update_variable(pk, json.loads(request.body))
         variable = serializers.serialize('json', [variable_dto,])
         return HttpResponse(variable, 'application/json')
+    
+def variables_view(request):
+    if request.method == 'GET':
+        variables = vl.get_variables()
+        variables_dto = serializers.serialize('json', variables)
+        return HttpResponse(variables_dto, 'application/json')
+
+def variable_view(request, pk):
+    if request.method == 'GET':
+        variables = vl.get_variable(pk)
+        variable_dto = serializers.serialize('json', variables)
+        return HttpResponse(variable_dto, 'application/json')
